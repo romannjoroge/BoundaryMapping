@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import math
+from abc import ABC, abstractmethod
+
 class Point:
     def __init__(self, x: int, y: int):
         self.x = x
@@ -20,11 +22,11 @@ def get_distance_between_points(X: Point, Y: Point):
     
     return math.sqrt((a**2) + (b**2))
 
-def is_point_too_far_other_point(X: Point, Y: Point, threshold: int = 1):
+def is_point_too_far_other_point(X: Point, Y: Point, threshold: int = 0.1):
     distance = get_distance_between_points(X=X, Y=Y)
-    return distance < threshold
+    return distance > threshold
 
-class Line:
+class Line(ABC):
     def __init__(self, beginning: Point, ending: Point):
         self.beginning = beginning
         self.ending = ending
@@ -34,6 +36,14 @@ class Line:
         
     def set_ending(self, ending: Point):
         self.ending = ending
+        
+    @abstractmethod
+    def is_point_in_line(self, point: Point):
+        pass
+    
+    @abstractmethod
+    def get_point_intersecting_perpendicular(self, perpendicular_pont: Point):
+        pass
     
 class HorizontalLine(Line):
     def __init__(self, beginning: Point, ending: Point):
@@ -41,7 +51,7 @@ class HorizontalLine(Line):
         super().__init__(beginning=beginning, ending=ending)
         self.y = beginning.y
         
-    def is_point_part_line(self, point: Point):
+    def is_point_in_line(self, point: Point):
         return self.y == point.y
     
     def get_point_intersecting_perpendicular(self, perpendicular_pont: Point):
@@ -123,16 +133,12 @@ def create_line(beginning: Point, ending: Point) -> Line:
         return SlantedLine(beginning=beginning, ending=ending)
     
 def check_if_point_in_line(line: Line, point: Point) -> bool:
-    if isinstance(line, HorizontalLine):
-        return line.is_point_part_line(point=point)
-    elif isinstance(line, VerticalLine):
-        return line.is_point_in_line(point=point)
-    elif isinstance(line, SlantedLine):
+    if isinstance(line, Line):
         return line.is_point_in_line(point=point)
     else:
         raise NotImplementedError
     
-def get_lines_in_shape(points: list[Point]) -> list[Line]:
+def get_lines_in_shape(points: list[Point], correct_gps_mistakes: bool = True) -> list[Line]:
     """
     Takes points and from those points gets the lines in shape
     """
@@ -156,22 +162,32 @@ def get_lines_in_shape(points: list[Point]) -> list[Line]:
             if check_if_point_in_line(line=line_to_check, point=point):
                 line_to_check.set_ending(point)
             else:
-                new_line = create_line(beginning=line_to_check.ending, ending=point)
-                lines.append(new_line)
+                # If correcting possible mistakes from GPS
+                if correct_gps_mistakes:
+                    perpendicular_point = line_to_check.get_point_intersecting_perpendicular(point)
+                    # If perpendicular point and our point are close enough add perpendicular point to line
+                    if not is_point_too_far_other_point(perpendicular_point, point):
+                        line_to_check.set_ending(perpendicular_point)
+                    else:
+                        new_line = create_line(beginning=line_to_check.ending, ending=point)
+                        lines.append(new_line)
+                else:
+                    new_line = create_line(beginning=line_to_check.ending, ending=point)
+                    lines.append(new_line)
                 
     return lines
     
 # Points for rectangle example
-# points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=0, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
+# points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=-0, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
 # Points for triangle example
-# points = [Point(x=0, y=0), Point(x=2, y=3), Point(x=4, y=6), Point(x=6.5, y=3), Point(x=9, y=0), Point(x=5, y=0), Point(x=0, y=0)]
+points = [Point(x=0, y=0), Point(x=2, y=3), Point(x=4, y=6), Point(x=6.5, y=3), Point(x=9, y=0), Point(x=5, y=0), Point(x=0, y=0)]
 # get_lines_in_shape(points=points)
 
-def get_edges_of_shape(points: list[Point]) -> list[Point]:
+def get_edges_of_shape(points: list[Point], correct_gps_mistakes: bool = True) -> list[Point]:
     """
     Get edges of the shape formed by the points
     """
-    lines = get_lines_in_shape(points=points)
+    lines = get_lines_in_shape(points=points, correct_gps_mistakes=correct_gps_mistakes)
     print(f"We have {len(lines)} lines: {lines}")
     edges: list[Point] = []
     
@@ -192,11 +208,11 @@ def get_edges_of_shape(points: list[Point]) -> list[Point]:
                 
     return edges
 
-def plot_shape(points: list[Point]):
+def plot_shape(points: list[Point], correct_gps_mistakes: bool = True):
     """
     Plot shape from lines in point
     """
-    edges = get_edges_of_shape(points=points)
+    edges = get_edges_of_shape(points=points, correct_gps_mistakes=correct_gps_mistakes)
     
     # Plot edges
     x_coords = [e.x for e in edges]
@@ -221,4 +237,4 @@ def plot_shape(points: list[Point]):
 # edges = get_edges_of_shape(points=points)
 # print(f"There are {len(edges)} edges in shape")
 # print(edges)
-# plot_shape(points=points)
+plot_shape(points=points)
