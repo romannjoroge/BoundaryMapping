@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import math
 class Point:
     def __init__(self, x: int, y: int):
         self.x = x
@@ -12,6 +13,16 @@ class Point:
             return other.x == self.x and other.y == self.y
         else:
             raise NotImplementedError
+        
+def get_distance_between_points(X: Point, Y: Point):
+    a = Y.x - X.x
+    b = Y.y - X.y
+    
+    return math.sqrt((a**2) + (b**2))
+
+def is_point_too_far_other_point(X: Point, Y: Point, threshold: int = 1):
+    distance = get_distance_between_points(X=X, Y=Y)
+    return distance < threshold
 
 class Line:
     def __init__(self, beginning: Point, ending: Point):
@@ -211,7 +222,3 @@ def plot_shape(points: list[Point]):
 # print(f"There are {len(edges)} edges in shape")
 # print(edges)
 # plot_shape(points=points)
-
-slanted_line = SlantedLine(beginning=Point(x=0, y=0), ending=Point(x=4, y=6))
-other_point = Point(x=7, y=4)
-print(f"Point intersecting perpendicular line from {other_point} and {slanted_line} is {slanted_line.get_point_intersecting_perpendicular(other_point)}")
