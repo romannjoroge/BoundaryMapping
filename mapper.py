@@ -57,8 +57,8 @@ class SlantedLine(Line):
         b = self.ending.y
         return d == (self.m * (c-a)) + b
     
-# Testing vertical line
-X = Point(x=1, y=3)
-Y = Point(x=1, y=2)
-vertical = VerticalLine(beginning=X, ending=Y)
-print(f"Vertical line x={vertical.x} with beginning {vertical.beginning} and ending {vertical.ending}")
+# Testing slanted line
+X = Point(x=0, y=0)
+Y = Point(x=4, y=6)
+slanted = SlantedLine(beginning=X, ending=Y)
+print(f"Slanted line slope={slanted.m} with beginning {slanted.beginning} and ending {slanted.ending}")
