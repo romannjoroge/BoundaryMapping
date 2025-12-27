@@ -26,6 +26,9 @@ class HorizontalLine(Line):
     def is_point_part_line(self, point: Point):
         return self.y == point.y
     
+    def __repr__(self):
+        return f"Horizontal line with y={self.y}, beginning {self.beginning} and ending {self.ending}"
+    
 class VerticalLine(Line):
     def __init__(self, beginning: Point, ending: Point):
         assert beginning.x == ending.x, "Vertical line must have the same x value"
@@ -34,6 +37,9 @@ class VerticalLine(Line):
         
     def is_point_in_line(self, point: Point):
         return point.x == self.x
+    
+    def __repr__(self):
+        return f"Vertical line with x={self.x}, beginning {self.beginning} and ending {self.ending}"
     
 class SlantedLine(Line):
     def __init__(self, beginning: Point, ending: Point):
@@ -57,8 +63,28 @@ class SlantedLine(Line):
         b = self.ending.y
         return d == (self.m * (c-a)) + b
     
-# Testing slanted line
-X = Point(x=0, y=0)
-Y = Point(x=4, y=6)
-slanted = SlantedLine(beginning=X, ending=Y)
-print(f"Slanted line slope={slanted.m} with beginning {slanted.beginning} and ending {slanted.ending}")
+    def __repr__(self):
+        return f"Slanted line with slope={self.m}, beginning {self.beginning} with ending {self.ending}"
+    
+def create_line(beginning: Point, ending: Point) -> Line:
+    """
+    A function that returns the line that joins the beginning and end point
+    
+    The returned line can either be vertical, horizontal or slanted
+    """
+    # Check if line is vertical
+    if beginning.x == ending.x:
+        return VerticalLine(beginning=beginning, ending=ending)
+    
+    # Check if line is horizontal
+    elif beginning.y == ending.y:
+        return HorizontalLine(beginning=beginning, ending=ending)
+    
+    # Return slanted line
+    else:
+        return SlantedLine(beginning=beginning, ending=ending)
+    
+X = Point(x=2,y=3)
+Y = Point(x=4,y=6)
+line = create_line(X, Y)
+print(line)
