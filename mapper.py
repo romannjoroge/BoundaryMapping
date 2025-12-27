@@ -5,6 +5,12 @@ class Point:
         
     def __repr__(self):
         return f"({self.x}, {self.y})"
+    
+    def is_equal(self, other):
+        if isinstance(other, Point):
+            return other.x == self.x and other.y == self.y
+        else:
+            raise NotImplementedError
 
 class Line:
     def __init__(self, beginning: Point, ending: Point):
@@ -121,8 +127,45 @@ def get_lines_in_shape(points: list[Point]) -> list[Line]:
                 new_line = create_line(beginning=line_to_check.ending, ending=point)
                 lines.append(new_line)
                 
-    print(f"We have {len(lines)} lines")
-    print(lines)
-            
+    return lines
+    
+# Points for rectangle example
 points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=0, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
-get_lines_in_shape(points=points)
+# Points for triangle example
+# points = [Point(x=0, y=0), Point(x=2, y=3), Point(x=4, y=6), Point(x=6.5, y=3), Point(x=9, y=0), Point(x=5, y=0), Point(x=0, y=0)]
+# get_lines_in_shape(points=points)
+
+def get_edges_of_shape(points: list[Point]) -> list[Point]:
+    """
+    Get edges of the shape formed by the points
+    """
+    lines = get_lines_in_shape(points=points)
+    print(f"We have {len(lines)} lines: {lines}")
+    edges: list[Point] = []
+    
+    for index, line in enumerate(lines):
+        # If first line take beginning  and ending point
+        if index == 0:
+            edges.append(line.beginning)
+            edges.append(line.ending)
+        
+        # If middle point get ending
+        elif index < len(lines) - 1:
+            edges.append(line.ending)
+        
+        # If last line check if end point same as first line starting point
+        else:
+            if not edges[0].is_equal(line.ending):
+                edges.append(line.ending)
+                
+    return edges
+
+def plot_shape(points: list[Point]):
+    """
+    Plot shape from lines in point
+    """
+    lines = get_lines_in_shape(points=points)
+    
+edges = get_edges_of_shape(points=points)
+print(f"There are {len(edges)} edges in shape")
+print(edges)
