@@ -33,6 +33,9 @@ class HorizontalLine(Line):
     def is_point_part_line(self, point: Point):
         return self.y == point.y
     
+    def get_point_intersecting_perpendicular(self, perpendicular_pont: Point):
+        return Point(x=perpendicular_pont.x, y=self.y)
+    
     def __repr__(self):
         return f"Horizontal line with y={self.y}, beginning {self.beginning} and ending {self.ending}"
     
@@ -44,6 +47,9 @@ class VerticalLine(Line):
         
     def is_point_in_line(self, point: Point):
         return point.x == self.x
+    
+    def get_point_intersecting_perpendicular(self, perpendicular_pont: Point):
+        return Point(x=self.x, y=perpendicular_pont.y)
     
     def __repr__(self):
         return f"Vertical line with x={self.x}, beginning {self.beginning} and ending {self.ending}"
@@ -69,6 +75,20 @@ class SlantedLine(Line):
         a = self.ending.x
         b = self.ending.y
         return d == (self.m * (c-a)) + b
+    
+    def get_point_intersecting_perpendicular(self, perpendicular_pont: Point):
+        a = self.ending.x
+        b = self.ending.y
+        c = perpendicular_pont.x
+        d = perpendicular_pont.y
+        m = self.m
+        
+        numerator = (-(m**2)*a)+ (m * b) - (m * d) - c
+        denominator = -1 - (m**2)
+        x = numerator / denominator
+        y = (m * x) - (m * a) + b
+        
+        return Point(x=x, y=y)
     
     def __repr__(self):
         return f"Slanted line with slope={self.m}, beginning {self.beginning} with ending {self.ending}"
@@ -191,3 +211,7 @@ def plot_shape(points: list[Point]):
 # print(f"There are {len(edges)} edges in shape")
 # print(edges)
 # plot_shape(points=points)
+
+horizontal_line = HorizontalLine(beginning=Point(x=1, y=0), ending=Point(x=10, y=0))
+other_point = Point(x=4, y=5)
+print(f"Point intersecting perpendicular line from {other_point} and {horizontal_line} is {horizontal_line.get_point_intersecting_perpendicular(other_point)}")
