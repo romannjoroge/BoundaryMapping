@@ -84,7 +84,28 @@ def create_line(beginning: Point, ending: Point) -> Line:
     else:
         return SlantedLine(beginning=beginning, ending=ending)
     
-X = Point(x=2,y=3)
-Y = Point(x=4,y=6)
-line = create_line(X, Y)
-print(line)
+def get_lines_in_shape(points: list[Point]) -> list[Line]:
+    """
+    Takes points and from those points gets the lines in shape
+    """
+    lines = []
+    beginning_point: Point = None
+    ending_point: Point = None
+    
+    for point in points:
+        print(f"Processing point {point}")
+        if len(lines) == 0:
+            if beginning_point == None:
+                print(f"Assinged beginning to {point}")
+                beginning_point = point
+            elif ending_point == None:
+                print(f"Assigned ending to {point}")
+                ending_point = point
+            else:
+                first_line = create_line(beginning=beginning_point, ending=ending_point)
+                lines.append(first_line)
+        else:
+            print(f"We have lines {lines}")
+            
+points = [Point(x=0, y=0), Point(x=0, y=6), Point(x=8, y=6), Point(x=8, y=0), Point(x=0, y=0)]
+get_lines_in_shape(points=points)
