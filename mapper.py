@@ -2,6 +2,9 @@ class Point:
     def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
+        
+    def __repr__(self):
+        return f"({self.x}, {self.y})"
 
 class Line:
     def __init__(self, beginning: Point, ending: Point):
@@ -51,4 +54,8 @@ class SlantedLine(Line):
         b = self.ending.y
         return d == (self.m * (c-a)) + b
     
-    
+# Testing horizontal line
+X = Point(x=1, y=2)
+Y = Point(x=3, y=2)
+horizontal = HorizontalLine(beginning=X, ending=Y)
+print(f"Horizontal line y={horizontal.y} with beginning {X} and ending {Y}")
