@@ -29,6 +29,7 @@ class HorizontalLine(Line):
 class VerticalLine(Line):
     def __init__(self, beginning: Point, ending: Point):
         assert beginning.x == ending.x, "Vertical line must have the same x value"
+        super().__init__(beginning=beginning, ending=ending)
         self.x = beginning.x
         
     def is_point_in_line(self, point: Point):
@@ -39,6 +40,7 @@ class SlantedLine(Line):
         assert beginning.x != ending.x, "Slanted line can't be vertical"
         assert beginning.y != ending.y, "Slanted line can't be horizontal"
         
+        super().__init__(beginning=beginning, ending=ending)
         self.m = (ending.y - beginning.y) / (ending.x - beginning.x)
         
     def is_point_in_line(self, point: Point):
@@ -55,8 +57,8 @@ class SlantedLine(Line):
         b = self.ending.y
         return d == (self.m * (c-a)) + b
     
-# Testing horizontal line
-X = Point(x=1, y=2)
-Y = Point(x=3, y=2)
-horizontal = HorizontalLine(beginning=X, ending=Y)
-print(f"Horizontal line y={horizontal.y} with beginning {X} and ending {Y}")
+# Testing vertical line
+X = Point(x=1, y=3)
+Y = Point(x=1, y=2)
+vertical = VerticalLine(beginning=X, ending=Y)
+print(f"Vertical line x={vertical.x} with beginning {vertical.beginning} and ending {vertical.ending}")
