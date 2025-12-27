@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 class Point:
     def __init__(self, x: int, y: int):
         self.x = x
@@ -130,7 +131,7 @@ def get_lines_in_shape(points: list[Point]) -> list[Line]:
     return lines
     
 # Points for rectangle example
-points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=0, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
+# points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=0, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
 # Points for triangle example
 # points = [Point(x=0, y=0), Point(x=2, y=3), Point(x=4, y=6), Point(x=6.5, y=3), Point(x=9, y=0), Point(x=5, y=0), Point(x=0, y=0)]
 # get_lines_in_shape(points=points)
@@ -164,8 +165,29 @@ def plot_shape(points: list[Point]):
     """
     Plot shape from lines in point
     """
-    lines = get_lines_in_shape(points=points)
+    edges = get_edges_of_shape(points=points)
     
-edges = get_edges_of_shape(points=points)
-print(f"There are {len(edges)} edges in shape")
-print(edges)
+    # Plot edges
+    x_coords = [e.x for e in edges]
+    y_coords = [e.y for e in edges]
+    
+    # Add first coordinate to end to draw final line
+    x_coords.append(x_coords[0])
+    y_coords.append(y_coords[0])
+    
+    print("x coords", x_coords)
+    print("y coords", y_coords)
+    
+    plt.plot(x_coords, y_coords, color='blue', linewidth=2)
+    plt.xlabel("X-axis")
+    plt.ylabel("Y-axis")
+    plt.title("Plotting Shape From Points")
+    plt.axis('equal') # Ensures the square is not stretched
+    plt.grid(True)
+    plt.savefig('shape.png', dpi=300, bbox_inches='tight')
+    
+    
+# edges = get_edges_of_shape(points=points)
+# print(f"There are {len(edges)} edges in shape")
+# print(edges)
+# plot_shape(points=points)
