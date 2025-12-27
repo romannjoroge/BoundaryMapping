@@ -22,7 +22,7 @@ def get_distance_between_points(X: Point, Y: Point):
     
     return math.sqrt((a**2) + (b**2))
 
-def is_point_too_far_other_point(X: Point, Y: Point, threshold: int = 0.1):
+def is_point_too_far_other_point(X: Point, Y: Point, threshold: int = 0.5):
     distance = get_distance_between_points(X=X, Y=Y)
     return distance > threshold
 
@@ -178,9 +178,9 @@ def get_lines_in_shape(points: list[Point], correct_gps_mistakes: bool = True) -
     return lines
     
 # Points for rectangle example
-# points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=-0, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
+# points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=0, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
 # Points for triangle example
-points = [Point(x=0, y=0), Point(x=2, y=3), Point(x=4, y=6), Point(x=6.5, y=3), Point(x=9, y=0), Point(x=5, y=0), Point(x=0, y=0)]
+# points = [Point(x=0, y=0), Point(x=2, y=3), Point(x=4, y=6), Point(x=6.5, y=3), Point(x=9, y=0), Point(x=5, y=0), Point(x=0, y=0)]
 # get_lines_in_shape(points=points)
 
 def get_edges_of_shape(points: list[Point], correct_gps_mistakes: bool = True) -> list[Point]:
@@ -237,4 +237,4 @@ def plot_shape(points: list[Point], correct_gps_mistakes: bool = True):
 # edges = get_edges_of_shape(points=points)
 # print(f"There are {len(edges)} edges in shape")
 # print(edges)
-plot_shape(points=points)
+# plot_shape(points=points)

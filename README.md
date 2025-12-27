@@ -34,6 +34,21 @@ The implemented algorithm looks like this:
 5. If point is part of current line update line's end point to new point
 6. Else create a new line that begins from the end of current line and ends at new point
 
+The algorithm also has a mode where it can try to correct possible innaccurate point values from either inaccurate GPS readings or if the field worker mistakenly walked slightly out of the line for the border. If this mode is turned off the inaccuracy will be treated as a new line, if it is turned on the algorithm will try to correct it and get the correct point. This is shown below:
+
+```python
+# With no correction
+points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=0.2, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
+plot_shape(points=points, correct_gps_mistakes=False)
+
+# With correction
+points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=0.2, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
+plot_shape(points=points)
+```
+![Difference between output with correction and without](./gps_corrections.png "No correction VS correction")
+
+The correction is done by calculating the distance between the point and an imaginary point that is on the line and when connected to our point forms a perpendicular line.
+
 ## How To Run Code
 
 To run the code do the following:
