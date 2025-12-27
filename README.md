@@ -21,8 +21,7 @@ We are able to know that a point is in the line using the equation of the line.
 
 1. If the **line is vertical** i.e. *x = value* we will know that a point (x, y) is in that line if its x coordinate makes the equation of the vertical line true. 
 2. If the **line is horizontal** i.e. *y = value* we will know that a point (x, y) is in that line if its y coordinate makes the equation true. 
-
-3.For a **slopped line**, we will use the point slope formual i.e. *y1 - y = m(x - x1)* to determine if a point (x1, y1) is in the line. The slope m of the line is calculated from the points that make up the slopped line. We then check if point (x1, y1) makes the equation above true with one of the points (x, y) that are in the slopped line.
+3. For a **slopped line**, we will use the point slope formual i.e. *y1 - y = m(x - x1)* to determine if a point (x1, y1) is in the line. The slope m of the line is calculated from the points that make up the slopped line. We then check if point (x1, y1) makes the equation above true with one of the points (x, y) that are in the slopped line.
 
 The code for doing these checks are in the *mapper.py* file.
 
