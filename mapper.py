@@ -20,6 +20,7 @@ class Line:
 class HorizontalLine(Line):
     def __init__(self, beginning: Point, ending: Point):
         assert beginning.y == ending.y, "Horizontal line must have the same y value"
+        super().__init__(beginning=beginning, ending=ending)
         self.y = beginning.y
         
     def is_point_part_line(self, point: Point):
