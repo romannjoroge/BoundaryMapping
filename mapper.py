@@ -212,6 +212,6 @@ def plot_shape(points: list[Point]):
 # print(edges)
 # plot_shape(points=points)
 
-horizontal_line = HorizontalLine(beginning=Point(x=1, y=0), ending=Point(x=10, y=0))
-other_point = Point(x=4, y=5)
-print(f"Point intersecting perpendicular line from {other_point} and {horizontal_line} is {horizontal_line.get_point_intersecting_perpendicular(other_point)}")
+slanted_line = SlantedLine(beginning=Point(x=0, y=0), ending=Point(x=4, y=6))
+other_point = Point(x=7, y=4)
+print(f"Point intersecting perpendicular line from {other_point} and {slanted_line} is {slanted_line.get_point_intersecting_perpendicular(other_point)}")
