@@ -84,6 +84,16 @@ def create_line(beginning: Point, ending: Point) -> Line:
     else:
         return SlantedLine(beginning=beginning, ending=ending)
     
+def check_if_point_in_line(line: Line, point: Point) -> bool:
+    if isinstance(line, HorizontalLine):
+        return line.is_point_part_line(point=point)
+    elif isinstance(line, VerticalLine):
+        return line.is_point_in_line(point=point)
+    elif isinstance(line, SlantedLine):
+        return line.is_point_in_line(point=point)
+    else:
+        raise NotImplementedError
+    
 def get_lines_in_shape(points: list[Point]) -> list[Line]:
     """
     Takes points and from those points gets the lines in shape
@@ -96,16 +106,23 @@ def get_lines_in_shape(points: list[Point]) -> list[Line]:
         print(f"Processing point {point}")
         if len(lines) == 0:
             if beginning_point == None:
-                print(f"Assinged beginning to {point}")
                 beginning_point = point
             elif ending_point == None:
-                print(f"Assigned ending to {point}")
                 ending_point = point
-            else:
-                first_line = create_line(beginning=beginning_point, ending=ending_point)
+                first_line = create_line(beginning=beginning_point, ending=point)
                 lines.append(first_line)
+            else:
+                raise "A line should be there"
         else:
-            print(f"We have lines {lines}")
+            line_to_check: Line = lines[-1]
+            if check_if_point_in_line(line=line_to_check, point=point):
+                line_to_check.set_ending(point)
+            else:
+                new_line = create_line(beginning=line_to_check.ending, ending=point)
+                lines.append(new_line)
+                
+    print(f"We have {len(lines)} lines")
+    print(lines)
             
-points = [Point(x=0, y=0), Point(x=0, y=6), Point(x=8, y=6), Point(x=8, y=0), Point(x=0, y=0)]
+points = [Point(x=0, y=0), Point(x=0, y=3), Point(x=0, y=6), Point(x=4, y=6), Point(x=8, y=6), Point(x=8, y=3), Point(x=8, y=0), Point(x=4, y=0), Point(x=0, y=0)]
 get_lines_in_shape(points=points)
